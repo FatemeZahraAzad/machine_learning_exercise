@@ -35,4 +35,3 @@ model.fit(x, y)
 
 X_new = [[37_655.2]]
 print(model.predict(X_new))
-
