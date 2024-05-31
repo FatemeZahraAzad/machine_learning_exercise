@@ -9,6 +9,9 @@ from sklearn.model_selection import train_test_split
 from scipy.stats import binom
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.impute import SimpleImputer
+from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import OrdinalEncoder
+from sklearn.preprocessing import OneHotEncoder
 
 
 def load_housing_data():
@@ -129,41 +132,70 @@ housing_labels = strat_train_set["median_house_value"].copy()
 
 null_rows_idx = housing.isnull().any(axis=1)
 head = housing.loc[null_rows_idx].head()
-print(head)
+# print(head)
 
 # option 1
-housing_option1 = housing.copy()
-
-housing_option1.dropna(subset=["total_bedrooms"], inplace=True)  # option 1
-
-housing_option1.loc[null_rows_idx].head()
+# housing_option1 = housing.copy()
+#
+# housing_option1.dropna(subset=["total_bedrooms"], inplace=True)  # option 1
+#
+# housing_option1.loc[null_rows_idx].head()
 # end
 
 # option 2
-housing_option2 = housing.copy()
-
-housing_option2.drop("total_bedrooms", axis=1, inplace=True)  # option 2
-
-housing_option2.loc[null_rows_idx].head()
+# housing_option2 = housing.copy()
+#
+# housing_option2.drop("total_bedrooms", axis=1, inplace=True)  # option 2
+#
+# housing_option2.loc[null_rows_idx].head()
 # end
 
 # option 3
-housing_option3 = housing.copy()
-
-median = housing["total_bedrooms"].median()
-housing_option3["total_bedrooms"].fillna(median, inplace=True)  # option 3
-
-housing_option3.loc[null_rows_idx].head()
+# housing_option3 = housing.copy()
+#
+# median = housing["total_bedrooms"].median()
+# housing_option3["total_bedrooms"].fillna(median, inplace=True)  # option 3
+#
+# housing_option3.loc[null_rows_idx].head()
 # end
 
 
 imputer = SimpleImputer(strategy="median")
 housing_num = housing.select_dtypes(include=[np.number])
 imputer.fit(housing_num)
-imputer.statistics_  # give median
-housing_num.median().values
+# imputer.statistics_  # give median
+# housing_num.median().values
 X = imputer.transform(housing_num)
-imputer.feature_names_in_
-housing_tr = pd.DataFrame(X, columns=housing_num.columns,
-                          index=housing_num.index)
-housing_tr.loc[null_rows_idx].head()
+# imputer.feature_names_in_ # col name
+# housing_tr = pd.DataFrame(X, columns=housing_num.columns,
+#                           index=housing_num.index)
+# housing_tr.loc[null_rows_idx].head()
+
+isolation_forest = IsolationForest(random_state=42)
+outlier_pred = isolation_forest.fit_predict(X)
+
+# print(outlier_pred)
+
+housing = housing.iloc[outlier_pred == 1]
+housing_labels = housing_labels.iloc[outlier_pred == 1]
+
+housing_without_outlier = housing.copy()
+housing_without_outlier.dropna(subset=["total_bedrooms"], inplace=True)
+# print(housing_without_outlier.loc[null_rows_idx].head())
+
+
+""" Handling Text and Categorical Attributes """
+
+housing_cat = housing[["ocean_proximity"]]
+# print(housing_cat.head(8))
+
+ordinal_encoder = OrdinalEncoder()
+housing_cat_encoded = ordinal_encoder.fit_transform(housing_cat)
+# print(housing_cat_encoded[:8])
+
+# print(ordinal_encoder.categories_)
+
+""" one-hot encoding """
+cat_encoder = OneHotEncoder()
+housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
+print(housing_cat_1hot.toarray())
