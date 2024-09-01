@@ -13,7 +13,6 @@ from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.preprocessing import OneHotEncoder
 
-
 def load_housing_data():
     tarball_path = Path("datasets/housing.tgz")
     if not tarball_path.is_file():
@@ -198,4 +197,6 @@ housing_cat_encoded = ordinal_encoder.fit_transform(housing_cat)
 """ one-hot encoding """
 cat_encoder = OneHotEncoder()
 housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
-print(housing_cat_1hot.toarray())
+cat_encoder = OneHotEncoder(sparse_output=False)
+housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
+print(housing_cat_1hot)
