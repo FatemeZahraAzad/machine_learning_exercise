@@ -51,40 +51,42 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 # plt.show()
 # ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-np.random.seed(0)
-X = 2 * np.random.randn(100, 1)
-y = 4 + 3 * X + np.random.randn(100, 1)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# np.random.seed(0)
+# X = 2 * np.random.randn(100, 1)
+# y = 4 + 3 * X + np.random.randn(100, 1)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+#
+# min_max_scaler = MinMaxScaler()
+# standard_scaler = StandardScaler()
+#
+# X_train_standard_scaled = standard_scaler.fit_transform(X_train)
+# X_test_standard_scaled = standard_scaler.transform(X_test)
+#
+# X_train_min_max_scaled = min_max_scaler.fit_transform(X_train)
+# X_test_min_max_scaled = min_max_scaler.transform(X_test)
+#
 
-min_max_scaler = MinMaxScaler()
-standard_scaler = StandardScaler()
+# def print_scaled_stats(X_scaled, name):
+#     print(f"\n{name} Scaled Dataset:")
+#     print(X_scaled)
+#     print(f"Mean: {np.mean(X_scaled)}")
+#     print(f"Standard Deviation: {np.std(X_scaled)}")
+#
+#
+# plt.figure(figsize=(12, 6))
+# plt.subplot(1, 2, 1)
+# plt.scatter(X_train_min_max_scaled, y_train, color='blue', label='Min-Max Scaled', alpha=0.6)
+# plt.title('Min-Max Scaling')
+# plt.xlabel('Scaled Feature')
+# plt.ylabel('Target Variable')
+# plt.axhline(0, color='red', linestyle='--')
+# plt.subplot(1, 2, 2)
+# plt.scatter(X_train_standard_scaled, y_train, color='green', label='Standardized', alpha=0.6)
+# plt.title('Standardization')
+# plt.xlabel('Scaled Feature')
+# plt.ylabel('Target Variable')
+# plt.axhline(0, color='red', linestyle='--')
+# plt.tight_layout()
+# plt.show()
+# ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-X_train_standard_scaled = standard_scaler.fit_transform(X_train)
-X_test_standard_scaled = standard_scaler.transform(X_test)
-
-X_train_min_max_scaled = min_max_scaler.fit_transform(X_train)
-X_test_min_max_scaled = min_max_scaler.transform(X_test)
-
-
-def print_scaled_stats(X_scaled, name):
-    print(f"\n{name} Scaled Dataset:")
-    print(X_scaled)
-    print(f"Mean: {np.mean(X_scaled)}")
-    print(f"Standard Deviation: {np.std(X_scaled)}")
-
-
-plt.figure(figsize=(12, 6))
-plt.subplot(1, 2, 1)
-plt.scatter(X_train_min_max_scaled, y_train, color='blue', label='Min-Max Scaled', alpha=0.6)
-plt.title('Min-Max Scaling')
-plt.xlabel('Scaled Feature')
-plt.ylabel('Target Variable')
-plt.axhline(0, color='red', linestyle='--')
-plt.subplot(1, 2, 2)
-plt.scatter(X_train_standard_scaled, y_train, color='green', label='Standardized', alpha=0.6)
-plt.title('Standardization')
-plt.xlabel('Scaled Feature')
-plt.ylabel('Target Variable')
-plt.axhline(0, color='red', linestyle='--')
-plt.tight_layout()
-plt.show()
